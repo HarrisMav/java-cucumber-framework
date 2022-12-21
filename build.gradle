@@ -10,8 +10,19 @@ repositories {
 }
 
 dependencies {
+    // https://mvnrepository.com/artifact/io.cucumber/cucumber-java
+    testImplementation group: 'io.cucumber', name: 'cucumber-core', version: '7.10.1'
+    testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: '7.10.1'
+    implementation group: 'io.cucumber', name: 'cucumber-java', version: '7.10.1'
+    // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.7.2'
+    // https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager
+    implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '5.3.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.7.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.2")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.7.2")
 }
 
 test {
