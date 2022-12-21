@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c35c1fdb-f077-4cc5-9371-27595b68efa4" name="Changes" comment="Plugged Selenium and Cucumber together, created After &amp; Before Hooks, created step to navigate Coinbase">
+    <list default="true" id="c35c1fdb-f077-4cc5-9371-27595b68efa4" name="Changes" comment="Test running on full screen, due to incognito we now have to click next and got it, user show rows by step implemented">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/TestRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestRunner.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/stepDefinitions/Hooks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/stepDefinitions/Hooks.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/stepDefinitions/StepDefinitions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/stepDefinitions/StepDefinitions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/features/Test.feature" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/features/Test.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/features/Test.feature" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/features/MarketcapData.feature" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/cucumber" beforeDir="false" afterPath="$PROJECT_DIR$/target/cucumber" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -244,7 +245,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671592282216</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Test running on full screen, due to incognito we now have to click next and got it, user show rows by step implemented">
+      <created>1671596326490</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1671596326490</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -260,15 +268,16 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Plugged Selenium and Cucumber together, created After &amp; Before Hooks, created step to navigate Coinbase" />
-    <option name="LAST_COMMIT_MESSAGE" value="Plugged Selenium and Cucumber together, created After &amp; Before Hooks, created step to navigate Coinbase" />
+    <MESSAGE value="Test running on full screen, due to incognito we now have to click next and got it, user show rows by step implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test running on full screen, due to incognito we now have to click next and got it, user show rows by step implemented" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/stepDefinitions/StepDefinitions.java</url>
-          <line>38</line>
-          <option name="timeStamp" value="3" />
+          <line>91</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

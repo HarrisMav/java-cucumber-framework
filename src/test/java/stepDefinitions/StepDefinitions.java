@@ -1,18 +1,25 @@
 package stepDefinitions;
 
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StepDefinitions {
     final WebDriver driver = Hooks.driver;
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    JavascriptExecutor ex=(JavascriptExecutor) driver;
+    List<List<String>> cryptoValues = new ArrayList<>();
+
     @When("the user navigates to {string}")
     public void theUserNavigatesTo(final String url) {
         driver.get(url);
@@ -37,13 +44,63 @@ public class StepDefinitions {
         dropdown.click();
 
         final WebElement buttonToPress = driver.findElement(By.xpath(String.format("//button[contains(text(),'%s')]",rowsToShow)));
-
-        wait.until(ExpectedConditions.elementToBeClickable(buttonToPress));
+        wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath(String.format("//button[contains(text(),'%s')]",rowsToShow)))));
         buttonToPress.click();
     }
 
+    /**
+     * This click a button function uses JavascriptExecutor since there are a few non-interactable buttons that appear,
+     * the problem comes when an ad comes through on different timings around the test lifecycle and at any moment can stop
+     * the driver having access to buttons to click.
+     *
+     * @param linkText button text.
+     */
     @And("the user clicks {string} button")
     public void theUserClicks(final String linkText) {
-        driver.findElement(By.xpath(String.format("//button[contains(text(),'%s')]",linkText))).click();
+        final WebElement elementToClick = driver.findElement(By.xpath(String.format("//button[contains(text(),'%s')]",linkText)));
+        wait.until(ExpectedConditions.visibilityOf(elementToClick));
+        ex.executeScript("arguments[0].click()", elementToClick);
+    }
+
+    /**
+     * This method snapshots the Crypto table when it's read and then saves every result of a row into a List<String>
+     * that List is saved into another List of those results through every iteration. Finally, all those are kept in this instance
+     * of StepsDefinitions class as a class variable and can be accessible at any time during this test.
+     *
+     * There are a few instances where variables can be used, though it is an issue to do it like that since on Java the
+     * variables are pass by value, therefore when we capture the element at the start of the method trying to make it a var
+     * then that part might change for certain coins since the data is dynamic, therefore a Stale Element exception is thrown.
+     * To resolve that I've used no variables and referenced everything whenever I needed it to make the tests robust.
+     *
+     * @param testCategories categories requested by the user. It can be any combination of categories as long as it retains
+     *                       the same wording as on the page and this will work.This method can be re used for any configuration
+     *                       of the requested categories we would like to see.
+     */
+    @And("the user captures Crypto data for")
+    public void theUserCapturesCryptoDataFor(final DataTable testCategories) {
+        final List<String> categoryList = testCategories.transpose().asList(String.class);
+        final List<Integer> categoryIndexList = new ArrayList<>();
+        final List<WebElement> tableHeaders = driver.findElements(By.tagName("th"));
+
+        for (int tableHeaderIndex = 0; tableHeaderIndex < tableHeaders.size(); tableHeaderIndex++) {
+            if (categoryList.contains(tableHeaders.get(tableHeaderIndex).getText())){
+                categoryIndexList.add(tableHeaderIndex);
+            }
+        }
+
+        final int numberOfRows = driver.findElement(By.tagName("tbody")).findElements(By.tagName("tr")).size();
+
+        for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
+            List<String> requestedValues = new ArrayList<>();
+            ex.executeScript("arguments[0].scrollIntoView();", driver.findElement(By.tagName("tbody")).findElements(By.tagName("tr")).get(rowIndex));
+            for (final Integer categoryIndex: categoryIndexList) {
+                final String requestedVal = driver.findElement(By.tagName("tbody"))
+                        .findElements(By.tagName("tr")).get(rowIndex)
+                        .findElements(By.tagName("td")).get(categoryIndex)
+                        .getText();
+                requestedValues.add(requestedVal);
+            }
+            cryptoValues.add(requestedValues);
+        }
     }
 }

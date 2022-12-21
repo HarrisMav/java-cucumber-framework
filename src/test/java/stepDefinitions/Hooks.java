@@ -6,6 +6,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class Hooks {
         chromeOptions.addArguments(setupChromeOptions());
         driverService = ChromeDriverService.createDefaultService();
         driver = new ChromeDriver(driverService, chromeOptions);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10)) ;
     }
 
     private static List<String> setupChromeOptions(){
