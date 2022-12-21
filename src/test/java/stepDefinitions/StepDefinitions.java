@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StepDefinitions {
-    final WebDriver driver = Hooks.driver;
-    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-    JavascriptExecutor ex=(JavascriptExecutor) driver;
-    List<List<String>> cryptoValues = new ArrayList<>();
+    final private WebDriver driver = Hooks.driver;
+    private WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    private JavascriptExecutor ex=(JavascriptExecutor) driver;
+    private List<List<String>> cryptoValues = new ArrayList<>();
 
     @When("the user navigates to {string}")
     public void theUserNavigatesTo(final String url) {
@@ -41,11 +41,11 @@ public class StepDefinitions {
                 .findElement(By.tagName("div"));
 
         wait.until(ExpectedConditions.elementToBeClickable(dropdown));
-        dropdown.click();
+        ex.executeScript("arguments[0].click()", dropdown);
 
         final WebElement buttonToPress = driver.findElement(By.xpath(String.format("//button[contains(text(),'%s')]",rowsToShow)));
-        wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath(String.format("//button[contains(text(),'%s')]",rowsToShow)))));
-        buttonToPress.click();
+        wait.until(ExpectedConditions.elementToBeClickable(buttonToPress));
+        ex.executeScript("arguments[0].click()", buttonToPress);
     }
 
     /**
@@ -57,8 +57,8 @@ public class StepDefinitions {
      */
     @And("the user clicks {string} button")
     public void theUserClicks(final String linkText) {
+        ex.executeScript("arguments[0].scrollIntoView();", driver.findElement(By.xpath(String.format("//button[contains(text(),'%s')]",linkText))));
         final WebElement elementToClick = driver.findElement(By.xpath(String.format("//button[contains(text(),'%s')]",linkText)));
-        wait.until(ExpectedConditions.visibilityOf(elementToClick));
         ex.executeScript("arguments[0].click()", elementToClick);
     }
 
@@ -76,19 +76,17 @@ public class StepDefinitions {
      *                       the same wording as on the page and this will work.This method can be re used for any configuration
      *                       of the requested categories we would like to see.
      */
-    @And("the user captures Crypto data for")
-    public void theUserCapturesCryptoDataFor(final DataTable testCategories) {
+    @And("the user captures Crypto data for {int} rows with headers")
+    public void theUserCapturesCryptoDataForRowsWithHeaders(final int numberOfRows, final DataTable testCategories) {
         final List<String> categoryList = testCategories.transpose().asList(String.class);
         final List<Integer> categoryIndexList = new ArrayList<>();
         final List<WebElement> tableHeaders = driver.findElements(By.tagName("th"));
 
         for (int tableHeaderIndex = 0; tableHeaderIndex < tableHeaders.size(); tableHeaderIndex++) {
-            if (categoryList.contains(tableHeaders.get(tableHeaderIndex).getText())){
+            if (categoryList.contains(tableHeaders.get(tableHeaderIndex).getText())) {
                 categoryIndexList.add(tableHeaderIndex);
             }
         }
-
-        final int numberOfRows = driver.findElement(By.tagName("tbody")).findElements(By.tagName("tr")).size();
 
         for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
             List<String> requestedValues = new ArrayList<>();
@@ -102,5 +100,23 @@ public class StepDefinitions {
             }
             cryptoValues.add(requestedValues);
         }
+    }
+
+    @And("the user selects {string} list item")
+    public void theUserSelectsListItem(final String listItemText) {
+        final WebElement listItemToPress = driver.findElement(By.xpath("//*[text()='"+listItemText+"']"));
+        wait.until(ExpectedConditions.elementToBeClickable(listItemToPress));
+        listItemToPress.click();
+        System.out.println();
+    }
+
+    @And("the user clicks {string} menu button")
+    public void theUserClicksMenuButton(final String menuButtonText) {
+        driver.findElement(By.xpath(String.format("//button[contains(text(),'%s')]",menuButtonText))).click();
+    }
+
+    @And("the user clicks {string} slider")
+    public void theUserClicksSlider(final String id) {
+        driver.findElement(By.id(id)).click();
     }
 }

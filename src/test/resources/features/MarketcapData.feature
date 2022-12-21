@@ -8,5 +8,11 @@ Feature: Comparing Marketcap data
 
   Scenario: Test 1
     And the user shows rows by "20"
-    And the user captures Crypto data for
+    And the user captures Crypto data for 20 rows with headers
       | # | Name | Price | Market Cap |
+    When the user clicks "Filters" button
+    And the user clicks "Algorithm" menu button
+    And the user selects "PoW" list item
+    And the user selects "+ Add Filter" list item
+    And the user clicks "mineable" slider
+    And the user clicks "Show results" button
