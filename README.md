@@ -1,5 +1,11 @@
 # Java Cucumber Framework
 
+## Prerequisites
+- Java 12 - though it is backwards compatible
+- Most recent Gradle - strongly suggested this is ran with the projects Gradle Wrapper
+- Most recent version of Chrome - if you need to check that go on triple dots on Chrome > About Chrome > version will be the first thing that appears
+- IntelliJ community/edu/ultimate - if this **MUST** be ran anywhere else please use the Git Bash console (if on Windows)
+
 ## Setup
 
 The exercise was done on a brand new Windows machine so a lot of the steps might be a bit extra for another developer, 
@@ -17,10 +23,13 @@ we will need some extra vintage dependencies that are created for purposes like 
 only thing that needs to be done for the project to be set up is run:
 - `gradle build`
 
-**If Gradle isn't installed on your system, you can run this command & any other you'd want by writing checking the side panels
+
+
+**If Gradle isn't installed on your system, you can run this command & any other you'd want by checking the side panels
 ![img.png](img.png)
 And then  
 ![img_1.png](img_1.png)**
+
 ## Development Methodology : Trunk Based Development (TBD)
 
 The best software development methodology I've worked under is hands down TBD, the aim is that the work will be done on 1

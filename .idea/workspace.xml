@@ -4,17 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c35c1fdb-f077-4cc5-9371-27595b68efa4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/img.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/img_1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/StepDefinitions.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/TestRunner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/features/Test.feature" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+    <list default="true" id="c35c1fdb-f077-4cc5-9371-27595b68efa4" name="Changes" comment="Plugged Selenium and Cucumber together, created After &amp; Before Hooks, created step to navigate Coinbase">
+      <change afterPath="$PROJECT_DIR$/src/test/java/stepDefinitions/Hooks.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/stepDefinitions/StepDefinitions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/StepDefinitions.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/TestRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestRunner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/features/Test.feature" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/features/Test.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/cucumber" beforeDir="false" afterPath="$PROJECT_DIR$/target/cucumber" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -254,6 +252,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Plugged Selenium and Cucumber together, created After &amp; Before Hooks, created step to navigate Coinbase" />
+    <option name="LAST_COMMIT_MESSAGE" value="Plugged Selenium and Cucumber together, created After &amp; Before Hooks, created step to navigate Coinbase" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
