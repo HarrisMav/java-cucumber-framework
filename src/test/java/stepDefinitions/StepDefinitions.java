@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StepDefinitions {
-    final private WebDriver driver = Hooks.driver;
+    private final WebDriver driver = Hooks.driver;
     private final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
     private final JavascriptExecutor ex=(JavascriptExecutor) driver;
-    private List<List<String>> cryptoValues = new ArrayList<>();
+    private final List<List<String>> cryptoValues = new ArrayList<>();
 
     @When("the user navigates to {string}")
     public void theUserNavigatesTo(final String url) {
@@ -63,7 +63,6 @@ public class StepDefinitions {
      * This method snapshots the Crypto table when it's read and then saves every result of a row into a List<String>
      * that List is saved into another List of those results through every iteration. Finally, all those are kept in this instance
      * of StepsDefinitions class as a class variable and can be accessible at any time during this test.
-     *
      * There are a few instances where variables can be used, though it is an issue to do it like that since on Java the
      * variables are pass by value, therefore when we capture the element at the start of the method trying to make it a var
      * then that part might change for certain coins since the data is dynamic, therefore a Stale Element exception is thrown.
@@ -93,6 +92,10 @@ public class StepDefinitions {
         }
     }
 
+    /**
+     * Selecting list items, namely PoW
+     * @param listItemText list item text
+     */
     @And("the user selects {string} list item")
     public void theUserSelectsListItem(final String listItemText) {
         final WebElement listItemToPress = driver.findElement(By.xpath("//*[text()='"+listItemText+"']"));
@@ -100,6 +103,11 @@ public class StepDefinitions {
         listItemToPress.click();
     }
 
+    /**
+     * The user clicking menu buttons, throws Ajax call which I haven't managed to make a wait command around yet
+     * throwing a Sleep until that is done
+     * @param menuButtonText the text that is in the menu button
+     */
     @And("the user clicks {string} menu button")
     public void theUserClicksMenuButton(final String menuButtonText) {
         try {
@@ -110,6 +118,11 @@ public class StepDefinitions {
         driver.findElement(By.xpath(String.format("//button[contains(text(),'%s')]",menuButtonText))).click();
     }
 
+    /**
+     * Can find all the filter related buttons via a CSS selector, then can grab the parent element and search
+     * for the appropriate elements by using the innerText
+     * @param menuButtonText button text
+     */
     @And("the user clicks {string} filter button")
     public void theUserClicksFilterButton(final String menuButtonText) {
         driver.findElement(By.cssSelector(".filter"))
@@ -122,6 +135,10 @@ public class StepDefinitions {
               });
     }
 
+    /**
+     * The slider needs to be clicked via the little arrow, which I found to be more consistent
+     * @param id of the slider
+     */
     @And("the user clicks {string} slider")
     public void theUserClicksSlider(final String id) {
         final WebElement slider = driver.findElement(By.id(id))
@@ -130,6 +147,13 @@ public class StepDefinitions {
         slider.click();
     }
 
+    /**
+     * Similar concept, by utilising the ids the developers provided for the filters, I can get the parent element twice
+     * and then search elements via text.
+     * Sleep is needed here since no solution about the Ajax/JQuery I need to wait for was found. The delay between those
+     * calls cause Selenium to try and grab elements that aren't on the page.
+     * @param filterToAdd the filter text we want to add
+     */
     @And("the user clicks {string} from more filters")
     public void theUserClicksFromMoreFilters(final String filterToAdd) {
         final List<WebElement> filterButtons = driver.findElement(By.cssSelector("button[data-qa-id='filter-dd-toggle']"))
@@ -151,6 +175,11 @@ public class StepDefinitions {
         }
     }
 
+    /**
+     * Using direct ids can just set the range of the filter we want straight away.
+     * @param min value
+     * @param max value
+     */
     @And("the user sets manual price range from {string} to {string}")
     public void theUserSetsPriceRangeFromTo(final String min, final String max) {
         wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.cssSelector("input[data-qa-id='range-filter-input-min']"))));
@@ -168,6 +197,13 @@ public class StepDefinitions {
         return categoryIndexList;
     }
 
+    /**
+     * Finally the comparison of the list we saved as class variable with the list that we are going to collect after
+     * we applied more filters to it.
+     * @param numberOfRows fully customiseable range of rows we want to check. If we want to check all possible rows
+     *                     can add a number like 700, the loop is made to break upon exception capture
+     * @param testCategories the categories we want to compare
+     */
     @Then("compare the newly filtered results with the first set for {int} rows")
     public void compareTheNewlyFilteredResultsWithTheFirstSetForRows(final int numberOfRows, final DataTable testCategories) {
         final List<String> categoryList = testCategories.transpose().asList(String.class);

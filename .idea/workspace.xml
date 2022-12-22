@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c35c1fdb-f077-4cc5-9371-27595b68efa4" name="Changes" comment="resolved some warnings">
+    <list default="true" id="c35c1fdb-f077-4cc5-9371-27595b68efa4" name="Changes" comment="Created consistent version with Thread.sleep, to investigate why nothing else works">
+      <change afterPath="$PROJECT_DIR$/img_2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img_3.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/stepDefinitions/StepDefinitions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/stepDefinitions/StepDefinitions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/features/MarketcapData.feature" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/features/MarketcapData.feature" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/cucumber" beforeDir="false" afterPath="$PROJECT_DIR$/target/cucumber" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -271,7 +272,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671681259204</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Created consistent version with Thread.sleep, to investigate why nothing else works">
+      <created>1671689191895</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1671689191895</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -293,18 +301,8 @@
     <MESSAGE value="Added few more navigation steps and refactored previous steps. Add filter TODO" />
     <MESSAGE value="Added steps to debug more effectively (to be deleted), can select mineable and Coins only filter." />
     <MESSAGE value="resolved some warnings" />
-    <option name="LAST_COMMIT_MESSAGE" value="resolved some warnings" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/stepDefinitions/StepDefinitions.java</url>
-          <line>158</line>
-          <option name="timeStamp" value="37" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Created consistent version with Thread.sleep, to investigate why nothing else works" />
+    <option name="LAST_COMMIT_MESSAGE" value="Created consistent version with Thread.sleep, to investigate why nothing else works" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
