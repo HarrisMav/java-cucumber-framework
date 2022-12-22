@@ -2,11 +2,9 @@ package stepDefinitions;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -16,7 +14,7 @@ import java.util.List;
 
 public class StepDefinitions {
     final private WebDriver driver = Hooks.driver;
-    private final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    private final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
     private final JavascriptExecutor ex=(JavascriptExecutor) driver;
     private List<List<String>> cryptoValues = new ArrayList<>();
 
@@ -78,14 +76,8 @@ public class StepDefinitions {
     @And("the user captures Crypto data for {int} rows with headers")
     public void theUserCapturesCryptoDataForRowsWithHeaders(final int numberOfRows, final DataTable testCategories) {
         final List<String> categoryList = testCategories.transpose().asList(String.class);
-        final List<Integer> categoryIndexList = new ArrayList<>();
         final List<WebElement> tableHeaders = driver.findElements(By.tagName("th"));
-
-        for (int tableHeaderIndex = 0; tableHeaderIndex < tableHeaders.size(); tableHeaderIndex++) {
-            if (categoryList.contains(tableHeaders.get(tableHeaderIndex).getText())) {
-                categoryIndexList.add(tableHeaderIndex);
-            }
-        }
+        final List<Integer> categoryIndexList = assignCategoryIndexesToList(categoryList, tableHeaders);
 
         for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
             List<String> requestedValues = new ArrayList<>();
@@ -106,11 +98,15 @@ public class StepDefinitions {
         final WebElement listItemToPress = driver.findElement(By.xpath("//*[text()='"+listItemText+"']"));
         wait.until(ExpectedConditions.elementToBeClickable(listItemToPress));
         listItemToPress.click();
-        System.out.println();
     }
 
     @And("the user clicks {string} menu button")
     public void theUserClicksMenuButton(final String menuButtonText) {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         driver.findElement(By.xpath(String.format("//button[contains(text(),'%s')]",menuButtonText))).click();
     }
 
@@ -128,10 +124,10 @@ public class StepDefinitions {
 
     @And("the user clicks {string} slider")
     public void theUserClicksSlider(final String id) {
-        driver.findElement(By.id(id))
-              .findElement(By.xpath("parent::*"))
-              .findElement(By.tagName("span"))
-              .click();
+        final WebElement slider = driver.findElement(By.id(id))
+                .findElement(By.xpath("parent::*"))
+                .findElement(By.tagName("span"));
+        slider.click();
     }
 
     @And("the user clicks {string} from more filters")
@@ -143,15 +139,61 @@ public class StepDefinitions {
 
         for (final WebElement filterButton: filterButtons) {
             if (filterButton.getText().equals(filterToAdd)) {
+                wait.until(ExpectedConditions.elementToBeClickable(filterButton));
                 filterButton.findElement(By.tagName("svg")).click();
                 break;
             }
         }
-        System.out.println("donw");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    @And("debug")
-    public void debug() {
-        System.out.println("debug");
+    @And("the user sets manual price range from {string} to {string}")
+    public void theUserSetsPriceRangeFromTo(final String min, final String max) {
+        wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.cssSelector("input[data-qa-id='range-filter-input-min']"))));
+        driver.findElement(By.cssSelector("input[data-qa-id='range-filter-input-min']")).sendKeys(min);
+        driver.findElement(By.cssSelector("input[data-qa-id='range-filter-input-max']")).sendKeys(max);
+    }
+
+    private static List<Integer> assignCategoryIndexesToList(final List<String> categoryList, final List<WebElement> tableHeaders){
+        final List<Integer> categoryIndexList = new ArrayList<>();
+        for (int tableHeaderIndex = 0; tableHeaderIndex < tableHeaders.size(); tableHeaderIndex++) {
+            if (categoryList.contains(tableHeaders.get(tableHeaderIndex).getText())) {
+                categoryIndexList.add(tableHeaderIndex);
+            }
+        }
+        return categoryIndexList;
+    }
+
+    @Then("compare the newly filtered results with the first set for {int} rows")
+    public void compareTheNewlyFilteredResultsWithTheFirstSetForRows(final int numberOfRows, final DataTable testCategories) {
+        final List<String> categoryList = testCategories.transpose().asList(String.class);
+        final List<WebElement> tableHeaders = driver.findElements(By.tagName("th"));
+        final List<Integer> categoryIndexList = assignCategoryIndexesToList(categoryList, tableHeaders);
+        final List<List<String>> tableResults = new ArrayList<>();
+        wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.tagName("svg"))));
+
+        try {
+            for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
+                List<String> requestedValues = new ArrayList<>();
+                ex.executeScript("arguments[0].scrollIntoView();", driver.findElement(By.tagName("tbody")).findElements(By.tagName("tr")).get(rowIndex));
+                for (final Integer categoryIndex: categoryIndexList) {
+                    final String requestedVal = driver.findElement(By.tagName("tbody"))
+                            .findElements(By.tagName("tr")).get(rowIndex)
+                            .findElements(By.tagName("td")).get(categoryIndex)
+                            .getText();
+                    requestedValues.add(requestedVal);
+                }
+                tableResults.add(requestedValues);
+            }
+        } catch (final IndexOutOfBoundsException | StaleElementReferenceException e) {}
+        System.out.println("Are the lists equal? "+tableResults.equals(cryptoValues));
+        System.out.println("---------------------------------------------------------");
+        System.out.println(tableResults);
+        System.out.println("---------------------------------------------------------");
+        System.out.println(cryptoValues);
     }
 }
