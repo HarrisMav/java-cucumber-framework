@@ -16,8 +16,8 @@ import java.util.List;
 
 public class StepDefinitions {
     final private WebDriver driver = Hooks.driver;
-    private WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-    private JavascriptExecutor ex=(JavascriptExecutor) driver;
+    private final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    private final JavascriptExecutor ex=(JavascriptExecutor) driver;
     private List<List<String>> cryptoValues = new ArrayList<>();
 
     @When("the user navigates to {string}")
@@ -30,9 +30,8 @@ public class StepDefinitions {
      * Show rows label looks like it is under the same parent element as the dropdown we aim to click, so getting the label first,
      * from it getting the parent and from the parent clicking the first div child element, the label is the paragraph
      * and the only div is the dropdown
-     *
      * Then for the easier part we just find the button that contains number 20 then click it
-     * @param rowsToShow
+     * @param rowsToShow the amount of rows we want to display currencies are, limited to 20,50,100
      */
     @And("the user shows rows by {string}")
     public void theUserShowsRowsBy(final String rowsToShow) {
@@ -115,8 +114,44 @@ public class StepDefinitions {
         driver.findElement(By.xpath(String.format("//button[contains(text(),'%s')]",menuButtonText))).click();
     }
 
+    @And("the user clicks {string} filter button")
+    public void theUserClicksFilterButton(final String menuButtonText) {
+        driver.findElement(By.cssSelector(".filter"))
+              .findElement(By.xpath("parent::*"))
+              .findElements(By.tagName("li"))
+              .forEach(listItemElement -> {
+                  if (listItemElement.getText().equals(menuButtonText)) {
+                      listItemElement.click();
+                  }
+              });
+    }
+
     @And("the user clicks {string} slider")
     public void theUserClicksSlider(final String id) {
-        driver.findElement(By.id(id)).click();
+        driver.findElement(By.id(id))
+              .findElement(By.xpath("parent::*"))
+              .findElement(By.tagName("span"))
+              .click();
+    }
+
+    @And("the user clicks {string} from more filters")
+    public void theUserClicksFromMoreFilters(final String filterToAdd) {
+        final List<WebElement> filterButtons = driver.findElement(By.cssSelector("button[data-qa-id='filter-dd-toggle']"))
+              .findElement(By.xpath("parent::*"))
+              .findElement(By.xpath("parent::*"))
+              .findElements(By.tagName("button"));
+
+        for (final WebElement filterButton: filterButtons) {
+            if (filterButton.getText().equals(filterToAdd)) {
+                filterButton.findElement(By.tagName("svg")).click();
+                break;
+            }
+        }
+        System.out.println("donw");
+    }
+
+    @And("debug")
+    public void debug() {
+        System.out.println("debug");
     }
 }
